@@ -1,20 +1,23 @@
 import { test, expect } from '@playwright/test'
 
+
+/// AAA - Arrange, Act, Assert
+/// Arrange - Preparar o teste
+/// Act - Executar o teste(AGIR)
+/// Assert - Verificar o resultado do teste
+
 test('deve consultar um pedido aprovado', async ({ page }) => {
+  // Arrange
   await page.goto('http://localhost:5174/')
-
-  // Checkpoint na tela inicial
   await expect(page.getByTestId('hero-section').getByRole('heading')).toContainText('Velô Sprint')
-
   await page.getByRole('link', { name: 'Consultar Pedido' }).click()
-
-  // Checkpoint na tela de consulta de pedido
   await expect(page.getByRole('heading')).toContainText('Consultar Pedido')
 
+  // Act
   await page.getByTestId('search-order-id').fill('VLO-1FZZZF')
-
   await page.getByTestId('search-order-button').click()
 
+  // Assert
   await expect(page.getByTestId('order-result-id')).toBeVisible()
   await expect(page.getByTestId('order-result-id')).toContainText('VLO-1FZZZF')
 
