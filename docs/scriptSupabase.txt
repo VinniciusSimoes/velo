@@ -1,0 +1,3 @@
+Executar caso precise rodar a migration do supabase
+
+~/scripts/supabase-push.sh
