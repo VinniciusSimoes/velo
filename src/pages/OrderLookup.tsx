@@ -131,7 +131,7 @@ const OrderLookup = () => {
 
         {/* Order Result */}
         {searchedOrder && (
-          <Card className="animate-fade-in" role="region" aria-label="Resultado do pedido" data-testid="order-result-card">
+          <Card className="animate-fade-in" role="region" aria-label="Resultado do pedido" data-testid={`order-result-${searchedOrder.id}`}>
             <CardHeader>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
