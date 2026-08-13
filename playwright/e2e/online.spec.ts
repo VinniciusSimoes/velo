@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test'
 
 test('A Webapp deve estar online', async ({ page }) => {
-  await page.goto('http://localhost:5174')
+  await page.goto('/')
 
   // Verifica se o título da página contém "Velô by Papito"
   await expect(page).toHaveTitle(/Velô by Papito/)
