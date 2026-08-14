@@ -8,7 +8,7 @@ export default tseslint.config(
   { ignores: ["dist"] },
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended],
-    files: ["**/*.{ts,tsx}"],
+    files: ["src/**/*.{ts,tsx}"],
     languageOptions: {
       ecmaVersion: 2020,
       globals: globals.browser,
@@ -20,6 +20,19 @@ export default tseslint.config(
     rules: {
       ...reactHooks.configs.recommended.rules,
       "react-refresh/only-export-components": ["warn", { allowConstantExport: true }],
+      "@typescript-eslint/no-unused-vars": "off",
+    },
+  },
+  // Testes E2E não são React: as regras de hooks não se aplicam.
+  // O parâmetro `use` das fixtures do Playwright colide com o hook `use()` do React 19.
+  {
+    extends: [js.configs.recommended, ...tseslint.configs.recommended],
+    files: ["playwright/**/*.ts", "playwright.config.ts"],
+    languageOptions: {
+      ecmaVersion: 2022,
+      globals: globals.node,
+    },
+    rules: {
       "@typescript-eslint/no-unused-vars": "off",
     },
   },

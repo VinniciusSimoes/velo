@@ -1,8 +1,6 @@
-import { test } from '@playwright/test'
+import { test } from '../support/fixtures'
 import { generateOrderCode } from '../support/helpers'
-import { NavbarComponent } from '../support/components/NavbarComponent'
-import { HomePage } from '../support/pages/HomePage'
-import { OrderLockupPage, OrderDetails } from '../support/pages/OrderLockupPage'
+import { OrderDetails } from '../support/actions/orderLockupActions'
 
 
 /// AAA - Arrange, Act, Assert
@@ -11,21 +9,13 @@ import { OrderLockupPage, OrderDetails } from '../support/pages/OrderLockupPage'
 /// Assert - Verificar o resultado do teste
 
 
-test.describe('Consultar pedidos', ()=>{
+test.describe('Consultar pedidos', () => {
 
-  let orderLockupPage: OrderLockupPage
-
-  test.beforeEach(async ({page}) => {
-
-        orderLockupPage = new OrderLockupPage(page)
-
-        await new HomePage(page).goto()
-        await new NavbarComponent(page).orderLockupLink()
-        await orderLockupPage.validatePageLoaded()
-        
+  test.beforeEach(async ({ app }) => {
+    await app.orderLockup.open()
   })
 
-  test('deve consultar um pedido aprovado', async () => {
+  test('deve consultar um pedido aprovado', async ({ app }) => {
 
     // TestData
     const order: OrderDetails = {
@@ -41,14 +31,14 @@ test.describe('Consultar pedidos', ()=>{
     }
 
     // Act
-    await orderLockupPage.searchOrder(order.number)
+    await app.orderLockup.searchOrder(order.number)
 
     // Assert
-    await orderLockupPage.validateOrderDetails(order)
-    await orderLockupPage.validateStatusBadge(order.status)
+    await app.orderLockup.validateOrderDetails(order)
+    await app.orderLockup.validateStatusBadge(order.status)
   })
 
-  test('deve consultar um pedido reprovado', async () => {
+  test('deve consultar um pedido reprovado', async ({ app }) => {
 
     // TestData
 
@@ -65,15 +55,15 @@ test.describe('Consultar pedidos', ()=>{
     }
 
     // Act
-    await orderLockupPage.searchOrder(order.number)
+    await app.orderLockup.searchOrder(order.number)
 
     // Assert
-    await orderLockupPage.validateOrderDetails(order)
-    await orderLockupPage.validateStatusBadge(order.status)
+    await app.orderLockup.validateOrderDetails(order)
+    await app.orderLockup.validateStatusBadge(order.status)
 
   })
 
-  test('deve consultar um pedido em analise', async () => {
+  test('deve consultar um pedido em analise', async ({ app }) => {
 
     // TestData
     const order: OrderDetails = {
@@ -89,24 +79,24 @@ test.describe('Consultar pedidos', ()=>{
     }
 
     // Act
-    await orderLockupPage.searchOrder(order.number)
+    await app.orderLockup.searchOrder(order.number)
 
     // Assert
-    await orderLockupPage.validateOrderDetails(order)
-    await orderLockupPage.validateStatusBadge(order.status)
+    await app.orderLockup.validateOrderDetails(order)
+    await app.orderLockup.validateStatusBadge(order.status)
   })
-  
-  test('deve exibir uma mensagem de erro quando o pedido não é encontrado', async () => {
-  
+
+  test('deve exibir uma mensagem de erro quando o pedido não é encontrado', async ({ app }) => {
+
     //TestData
     const order = generateOrderCode()
-  
+
     // Act
-    await orderLockupPage.searchOrder(order)
-  
-  
+    await app.orderLockup.searchOrder(order)
+
+
     // Assert
-    await orderLockupPage.validateOrderNotFound()
+    await app.orderLockup.validateOrderNotFound()
 
   })
 })
